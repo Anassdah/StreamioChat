@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  api-server:
+    image: anassdahchour/chatservice
+    ports:
+      - "4004:4004"
+    environment:
+      - DB-URL=mongodb://mongo/chat.msgs
+    networks:
+      - net
+    depends_on:
+      - mongo
+  mean-app:
+    image: mean-app
+    stdin_open: true
+    ports: 
+      - "4200:4200"
+    networks:
+      - net
+    depends_on:
+      - api-server
+  mongo:
+    image: mongo:4.2.20-rc0-bionic
+    ports:
+    - "27017:27017"
+networks:
+  net:
+    driver: bridge
